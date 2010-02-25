@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	</ui:style>
+	<g:FlowPanel>
+	   <g:Label ui:field="rateDisplay"></g:Label>
+	   <g:HorizontalPanel>
+	       <g:Button ui:field="fetchLatest">Fetch Latest</g:Button>
+	       <g:Button ui:field="viewHistory">View History</g:Button>
+	   </g:HorizontalPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 
