@@ -32,8 +32,10 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 	public interface Display extends WidgetDisplay {
 		HasText getRateDisplayLabel();
 		HasClickHandlers getFetchLatest();
+		HasClickHandlers getRefresh();
 
 		void setEnabledFetchLatestButton(boolean isEnabled);
+		void setShowLoadingCurrentRate(boolean isLoading);
 		/**
 		 * Add the rate to the recent rate table.
 		 * @param rate
@@ -93,7 +95,16 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 
 			@Override
 			public void onRateSaved(final Rate rate) {
-				display.addToRecentRates(rate, false);
+				display.addToRecentRates(rate, true);
+			}
+
+		}));
+
+		registerHandler(display.getRefresh().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(final ClickEvent event) {
+				getLatestSavedRates();
 			}
 
 		}));
@@ -102,17 +113,21 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 	}
 
 	void getLatestSavedRates() {
+		display.setShowLoadingCurrentRate(true);
+
 		final GetRates getRates = new GetRates();
 
 		_dispatch.execute(getRates, new AsyncCallback<GetRatesResult>() {
 
 			@Override
 			public void onFailure(final Throwable caught) {
+				display.setShowLoadingCurrentRate(false);
 				_logger.error("Unable to get saved rates: " + caught.getMessage());
 			}
 
 			@Override
 			public void onSuccess(final GetRatesResult result) {
+				display.setShowLoadingCurrentRate(false);
 				display.clearRecentRates();
 
 				for (final Rate rate : result.getRates()) {
@@ -130,16 +145,19 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 	}
 
 	void fetchSellingRate() {
+		display.setShowLoadingCurrentRate(true);
 		final CheckRate checkRate = new CheckRate(RateType.Selling);
 		_dispatch.execute(checkRate, new AsyncCallback<CheckRateResult>() {
 
 			@Override
 			public void onFailure(final Throwable caught) {
+				display.setShowLoadingCurrentRate(false);
 				_logger.error("Unable to fetch rate: " + caught.getMessage());
 			}
 
 			@Override
 			public void onSuccess(final CheckRateResult result) {
+				display.setShowLoadingCurrentRate(false);
 				// enable the fetch button
 				display.setEnabledFetchLatestButton(true);
 				display.getRateDisplayLabel().setText(String.valueOf(result.getRate().getRate()));

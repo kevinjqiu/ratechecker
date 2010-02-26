@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -23,13 +25,19 @@ public class MainView extends Composite implements MainPresenter.Display {
 	}
 
 	@UiField
+	Button refresh;
+
+	@UiField
 	Button fetchLatest;
 
 	@UiField
-	HasText rateDisplay;
+	Label rateDisplay;
 
 	@UiField
 	FlexTable rateTable;
+
+	@UiField
+	Image loading;
 
 	private final DateTimeFormat _dateTimeFormat;
 
@@ -81,7 +89,18 @@ public class MainView extends Composite implements MainPresenter.Display {
 
 	@Override
 	public void clearRecentRates() {
-		rateTable.clear();
+		rateTable.removeAllRows();
+	}
+
+	@Override
+	public HasClickHandlers getRefresh() {
+		return refresh;
+	}
+
+	@Override
+	public void setShowLoadingCurrentRate(final boolean isLoading) {
+		loading.setVisible(isLoading);
+		rateDisplay.setVisible(!isLoading);
 	}
 
 }

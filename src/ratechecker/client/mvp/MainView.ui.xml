@@ -7,11 +7,15 @@
 		font-weight: bolder;
 	}
 	</ui:style>
+	
+	<ui:with type="ratechecker.client.bundles.RateCheckerClientBundle" field="bundle"></ui:with>
 	<g:VerticalPanel>
 	   <g:Label>Latest Selling Rate</g:Label>
+	   <g:Image resource="{bundle.loading}" visible="false" ui:field="loading"></g:Image>
 	   <g:Label ui:field="rateDisplay" styleName="{style.rateDisplay}"></g:Label>
 	   <g:HorizontalPanel>
 	       <g:Button ui:field="fetchLatest">Fetch Latest</g:Button>
+	       <g:Button ui:field="refresh">Refresh</g:Button>
 	   </g:HorizontalPanel>
 	   
 	   <g:Label>Recent rates</g:Label>

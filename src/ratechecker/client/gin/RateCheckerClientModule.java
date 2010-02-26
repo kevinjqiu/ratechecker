@@ -4,12 +4,14 @@ import net.customware.gwt.presenter.client.DefaultEventBus;
 import net.customware.gwt.presenter.client.EventBus;
 import net.customware.gwt.presenter.client.gin.AbstractPresenterModule;
 import net.customware.gwt.presenter.client.place.PlaceManager;
+import ratechecker.client.bundles.RateCheckerClientBundle;
 import ratechecker.client.log.GwtLogAdapter;
 import ratechecker.client.log.ILog;
 import ratechecker.client.mvp.AppPresenter;
 import ratechecker.client.mvp.MainPresenter;
 import ratechecker.client.mvp.MainView;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -32,6 +34,10 @@ public class RateCheckerClientModule extends AbstractPresenterModule {
 
 	@Provides DateTimeFormat getDateTimeFormat() {
 		return DateTimeFormat.getShortDateTimeFormat();
+	}
+
+	@Provides RateCheckerClientBundle getRateCheckerClientBundle() {
+		return GWT.create(RateCheckerClientBundle.class);
 	}
 
 }
