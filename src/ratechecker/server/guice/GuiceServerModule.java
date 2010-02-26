@@ -7,6 +7,7 @@ import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
 import org.apache.commons.logging.Log;
 
 import ratechecker.server.handlers.CheckRateHandler;
+import ratechecker.server.handlers.GetRatesHandler;
 import ratechecker.server.handlers.SaveRateHandler;
 
 import com.google.inject.Singleton;
@@ -22,6 +23,7 @@ public class GuiceServerModule extends ActionHandlerModule {
 		bind(PersistenceManager.class).toProvider(PersistenceManagerProvider.class).in(Singleton.class);
 		bindHandler(CheckRateHandler.class);
 		bindHandler(SaveRateHandler.class);
+		bindHandler(GetRatesHandler.class);
 	}
 
 }

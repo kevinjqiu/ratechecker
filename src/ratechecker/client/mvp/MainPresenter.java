@@ -15,6 +15,8 @@ import ratechecker.shared.models.Rate;
 import ratechecker.shared.models.RateType;
 import ratechecker.shared.rpc.CheckRate;
 import ratechecker.shared.rpc.CheckRateResult;
+import ratechecker.shared.rpc.GetRates;
+import ratechecker.shared.rpc.GetRatesResult;
 import ratechecker.shared.rpc.SaveRate;
 import ratechecker.shared.rpc.SaveRateResult;
 
@@ -32,7 +34,19 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 		HasClickHandlers getFetchLatest();
 
 		void setEnabledFetchLatestButton(boolean isEnabled);
-		void addToRecentRates(Rate rate);
+		/**
+		 * Add the rate to the recent rate table.
+		 * @param rate
+		 * 		The {@link Rate} object
+		 * @param toHead
+		 * 		<code>true</code> - rate is inserted to the beginning of the table
+		 * 		<code>false</code> - rate is appended to the end of the table
+		 */
+		void addToRecentRates(Rate rate, boolean toHead);
+		/**
+		 * Clear the recent rates table.
+		 */
+		void clearRecentRates();
 	}
 
 	private final DispatchAsync _dispatch;
@@ -79,10 +93,39 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 
 			@Override
 			public void onRateSaved(final Rate rate) {
-				display.addToRecentRates(rate);
+				display.addToRecentRates(rate, false);
 			}
 
 		}));
+
+		getLatestSavedRates();
+	}
+
+	void getLatestSavedRates() {
+		final GetRates getRates = new GetRates();
+
+		_dispatch.execute(getRates, new AsyncCallback<GetRatesResult>() {
+
+			@Override
+			public void onFailure(final Throwable caught) {
+				_logger.error("Unable to get saved rates: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(final GetRatesResult result) {
+				display.clearRecentRates();
+
+				for (final Rate rate : result.getRates()) {
+					display.addToRecentRates(rate, true);
+				}
+
+				// Put the latest rate in the box
+				if (result.getRates().size() > 0) {
+					final Rate latestRate = result.getRates().get(0);
+					display.getRateDisplayLabel().setText(String.valueOf(latestRate.getRate()));
+				}
+			}
+		});
 
 	}
 

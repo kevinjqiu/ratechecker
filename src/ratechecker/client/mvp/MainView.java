@@ -72,10 +72,16 @@ public class MainView extends Composite implements MainPresenter.Display {
 	}
 
 	@Override
-	public void addToRecentRates(final Rate rate) {
-		rateTable.insertRow(0);
-		rateTable.setText(0, 0, _dateTimeFormat.format(rate.getTimeFetched()));
-		rateTable.setText(0, 1, String.valueOf(rate.getRate()));
+	public void addToRecentRates(final Rate rate, final boolean toHead) {
+		final int newRowIdx = toHead ? 0 : rateTable.getRowCount();
+		rateTable.insertRow(newRowIdx);
+		rateTable.setText(newRowIdx, 0, _dateTimeFormat.format(rate.getTimeFetched()));
+		rateTable.setText(newRowIdx, 1, String.valueOf(rate.getRate()));
+	}
+
+	@Override
+	public void clearRecentRates() {
+		rateTable.clear();
 	}
 
 }

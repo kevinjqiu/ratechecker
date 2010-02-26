@@ -31,7 +31,7 @@ public class RateCheckerClientModule extends AbstractPresenterModule {
 	}
 
 	@Provides DateTimeFormat getDateTimeFormat() {
-		return DateTimeFormat.getShortTimeFormat();
+		return DateTimeFormat.getShortDateTimeFormat();
 	}
 
 }
