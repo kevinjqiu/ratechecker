@@ -2,24 +2,32 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-	.rateDisplay {
-		font-size: x-large;
-		font-weight: bolder;
-	}
+		.rateDisplay {
+			font-size: x-large;
+			font-weight: bolder;
+		}
+		
+		.mainPanel {
+			padding: 10px;
+		}
 	</ui:style>
-	
-	<ui:with type="ratechecker.client.bundles.RateCheckerClientBundle" field="bundle"></ui:with>
-	<g:VerticalPanel>
-	   <g:Label>Latest Selling Rate</g:Label>
-	   <g:Image resource="{bundle.loading}" visible="false" ui:field="loading"></g:Image>
-	   <g:Label ui:field="rateDisplay" styleName="{style.rateDisplay}"></g:Label>
-	   <g:HorizontalPanel>
-	       <g:Button ui:field="fetchLatest">Fetch Latest</g:Button>
-	       <g:Button ui:field="refresh">Refresh</g:Button>
-	   </g:HorizontalPanel>
-	   
-	   <g:Label>Recent rates</g:Label>
-	   <g:FlexTable ui:field="rateTable">
-	   </g:FlexTable>
-	</g:VerticalPanel>
+
+	<ui:with type="ratechecker.client.bundles.RateCheckerClientBundle"
+		field="bundle"></ui:with>
+	<g:DecoratorPanel height="200px">
+		<g:VerticalPanel styleName="{style.mainPanel}" verticalAlignment="ALIGN_TOP">
+			<g:Label>Latest Selling Rate</g:Label>
+			<g:Image resource="{bundle.loading}" visible="false"
+				ui:field="loading"></g:Image>
+			<g:Label ui:field="rateDisplay" styleName="{style.rateDisplay}"></g:Label>
+			<g:HorizontalPanel>
+				<g:Button ui:field="fetchLatest">Fetch Latest</g:Button>
+				<g:Button ui:field="refresh">Refresh</g:Button>
+			</g:HorizontalPanel>
+
+			<g:Label>Recent rates</g:Label>
+			<g:FlexTable ui:field="rateTable">
+			</g:FlexTable>
+		</g:VerticalPanel>
+	</g:DecoratorPanel>
 </ui:UiBinder> 

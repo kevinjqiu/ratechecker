@@ -15,6 +15,11 @@ h1 {
   font-size: 16pt;
 }
 
+.gwt-DecoratorPanel .middleCenter {
+   height: 100%;
+   width: 100%;
+ }
+
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
   width: 400px;
