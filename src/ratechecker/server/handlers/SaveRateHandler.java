@@ -1,4 +1,4 @@
-package ratechecker.server.actions;
+package ratechecker.server.handlers;
 
 import javax.jdo.PersistenceManager;
 
@@ -25,7 +25,7 @@ public class SaveRateHandler implements ActionHandler<SaveRate, SaveRateResult> 
 		final SaveRateResult retval = new SaveRateResult();
 
 		try {
-			_pm.makePersistent(action);
+			_pm.makePersistent(action.getRate());
 			retval.setSuccess(true);
 		} finally {
 			_pm.close();

@@ -6,8 +6,8 @@ import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
 
 import org.apache.commons.logging.Log;
 
-import ratechecker.server.actions.CheckRateHandler;
-import ratechecker.server.actions.SaveRateHandler;
+import ratechecker.server.handlers.CheckRateHandler;
+import ratechecker.server.handlers.SaveRateHandler;
 
 import com.google.inject.Singleton;
 

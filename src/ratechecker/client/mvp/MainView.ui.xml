@@ -2,12 +2,20 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
+	.rateDisplay {
+		font-size: x-large;
+		font-weight: bolder;
+	}
 	</ui:style>
-	<g:FlowPanel>
-	   <g:Label ui:field="rateDisplay"></g:Label>
+	<g:VerticalPanel>
+	   <g:Label>Latest Selling Rate</g:Label>
+	   <g:Label ui:field="rateDisplay" styleName="{style.rateDisplay}"></g:Label>
 	   <g:HorizontalPanel>
 	       <g:Button ui:field="fetchLatest">Fetch Latest</g:Button>
-	       <g:Button ui:field="viewHistory">View History</g:Button>
 	   </g:HorizontalPanel>
-	</g:FlowPanel>
+	   
+	   <g:Label>Recent rates</g:Label>
+	   <g:FlexTable ui:field="rateTable">
+	   </g:FlexTable>
+	</g:VerticalPanel>
 </ui:UiBinder> 

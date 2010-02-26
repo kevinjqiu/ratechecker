@@ -10,6 +10,8 @@ import ratechecker.client.mvp.AppPresenter;
 import ratechecker.client.mvp.MainPresenter;
 import ratechecker.client.mvp.MainView;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 public class RateCheckerClientModule extends AbstractPresenterModule {
@@ -26,6 +28,10 @@ public class RateCheckerClientModule extends AbstractPresenterModule {
 		bind(AppPresenter.class);
 
 		bindPresenter(MainPresenter.class, MainPresenter.Display.class, MainView.class);
+	}
+
+	@Provides DateTimeFormat getDateTimeFormat() {
+		return DateTimeFormat.getShortTimeFormat();
 	}
 
 }

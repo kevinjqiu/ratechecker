@@ -7,9 +7,16 @@ import net.customware.gwt.presenter.client.place.PlaceRequest;
 import net.customware.gwt.presenter.client.widget.WidgetDisplay;
 import net.customware.gwt.presenter.client.widget.WidgetPresenter;
 import ratechecker.client.log.ILog;
+import ratechecker.shared.events.RateFetchedEvent;
+import ratechecker.shared.events.RateFetchedHandler;
+import ratechecker.shared.events.RateSavedEvent;
+import ratechecker.shared.events.RateSavedHandler;
+import ratechecker.shared.models.Rate;
 import ratechecker.shared.models.RateType;
 import ratechecker.shared.rpc.CheckRate;
 import ratechecker.shared.rpc.CheckRateResult;
+import ratechecker.shared.rpc.SaveRate;
+import ratechecker.shared.rpc.SaveRateResult;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,7 +30,9 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 	public interface Display extends WidgetDisplay {
 		HasText getRateDisplayLabel();
 		HasClickHandlers getFetchLatest();
-		HasClickHandlers getViewHistory();
+
+		void setEnabledFetchLatestButton(boolean isEnabled);
+		void addToRecentRates(Rate rate);
 	}
 
 	private final DispatchAsync _dispatch;
@@ -56,11 +65,30 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 			}
 
 		}));
+
+		registerHandler(eventBus.addHandler(RateFetchedEvent.TYPE, new RateFetchedHandler() {
+
+			@Override
+			public void onRateFetched(final Rate rate) {
+				saveRate(rate);
+			}
+
+		}));
+
+		registerHandler(eventBus.addHandler(RateSavedEvent.TYPE, new RateSavedHandler() {
+
+			@Override
+			public void onRateSaved(final Rate rate) {
+				display.addToRecentRates(rate);
+			}
+
+		}));
+
 	}
 
 	void fetchSellingRate() {
-		final CheckRate action = new CheckRate(RateType.Selling);
-		_dispatch.execute(action, new AsyncCallback<CheckRateResult>() {
+		final CheckRate checkRate = new CheckRate(RateType.Selling);
+		_dispatch.execute(checkRate, new AsyncCallback<CheckRateResult>() {
 
 			@Override
 			public void onFailure(final Throwable caught) {
@@ -69,10 +97,35 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 
 			@Override
 			public void onSuccess(final CheckRateResult result) {
+				// enable the fetch button
+				display.setEnabledFetchLatestButton(true);
 				display.getRateDisplayLabel().setText(String.valueOf(result.getRate().getRate()));
+				eventBus.fireEvent(new RateFetchedEvent(result.getRate()));
 			}
 
 		});
+
+		// disable the fetch button until RPC succeeds
+		display.setEnabledFetchLatestButton(false);
+	}
+
+	void saveRate(final Rate rate) {
+		final SaveRate saveRate = new SaveRate(rate);
+
+		_dispatch.execute(saveRate, new AsyncCallback<SaveRateResult>() {
+
+			@Override
+			public void onFailure(final Throwable caught) {
+				_logger.error("Unable to save rate: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(final SaveRateResult result) {
+				eventBus.fireEvent(new RateSavedEvent(rate));
+			}
+
+		});
+
 	}
 
 	@Override

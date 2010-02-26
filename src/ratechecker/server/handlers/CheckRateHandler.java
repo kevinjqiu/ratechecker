@@ -1,4 +1,4 @@
-package ratechecker.server.actions;
+package ratechecker.server.handlers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +19,9 @@ public class CheckRateHandler implements ActionHandler<CheckRate, CheckRateResul
 	public static final String URL_BUY = "http://www.ingdirect.ca/en/datafiles/rates/usbuying.html";
 
 	public static final String URL_SELL = "http://www.ingdirect.ca/en/datafiles/rates/usselling.html";
+
+	public CheckRateHandler() {
+	}
 
 	@Override
 	public CheckRateResult execute(final CheckRate action, final ExecutionContext ctx) throws ActionException {
@@ -51,7 +54,8 @@ public class CheckRateHandler implements ActionHandler<CheckRate, CheckRateResul
 				retval.setRate(rate);
 
 			} finally {
-				br.close();
+				if (br != null)
+					br.close();
 			}
 		} catch (final MalformedURLException e) {
 			e.printStackTrace();
@@ -74,7 +78,6 @@ public class CheckRateHandler implements ActionHandler<CheckRate, CheckRateResul
 
 	@Override
 	public void rollback(final CheckRate action, final CheckRateResult result, final ExecutionContext ctx) throws ActionException {
-		// TODO Auto-generated method stub
 	}
 
 
