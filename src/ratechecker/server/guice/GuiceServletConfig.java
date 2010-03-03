@@ -25,8 +25,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		return Guice.createInjector(new GuiceServerModule(_ctx.getRealPath("/")),
-				new DispatchServletModule());
+		return Guice.createInjector(new GuiceServerModule(), new DispatchServletModule());
 	}
 
 }

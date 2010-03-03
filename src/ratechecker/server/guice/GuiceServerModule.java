@@ -14,7 +14,7 @@ import com.google.inject.Singleton;
 
 public class GuiceServerModule extends ActionHandlerModule {
 
-	public GuiceServerModule(final String rootPath) {
+	public GuiceServerModule() {
 	}
 
 	@Override
