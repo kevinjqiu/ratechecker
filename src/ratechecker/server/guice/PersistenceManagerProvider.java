@@ -8,11 +8,15 @@ import com.google.inject.Provider;
 
 public class PersistenceManagerProvider implements Provider<PersistenceManager> {
 
-	private static final PersistenceManagerFactory INSTANCE = JDOHelper.getPersistenceManagerFactory("transactions-optional");
+	private final PersistenceManagerFactory _pmf;
+
+	public PersistenceManagerProvider() {
+		_pmf = JDOHelper.getPersistenceManagerFactory("transactions-optional");
+	}
 
 	@Override
 	public PersistenceManager get() {
-		return INSTANCE.getPersistenceManager();
+		return _pmf.getPersistenceManager();
 	}
 
 }

@@ -1,7 +1,5 @@
 package ratechecker.server.guice;
 
-import javax.jdo.PersistenceManager;
-
 import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
 
 import org.apache.commons.logging.Log;
@@ -20,7 +18,8 @@ public class GuiceServerModule extends ActionHandlerModule {
 	@Override
 	protected void configureHandlers() {
 		bind(Log.class).toProvider(LogProvider.class).in(Singleton.class);
-		bind(PersistenceManager.class).toProvider(PersistenceManagerProvider.class).in(Singleton.class);
+		//		bind(PersistenceManager.class).toProvider(PersistenceManagerProvider.class).in(Singleton.class);
+		bind(PersistenceManagerProvider.class).in(Singleton.class);
 		bindHandler(CheckRateHandler.class);
 		bindHandler(SaveRateHandler.class);
 		bindHandler(GetRatesHandler.class);
