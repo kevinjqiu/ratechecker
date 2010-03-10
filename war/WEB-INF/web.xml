@@ -24,4 +24,13 @@
 		<welcome-file>RateChecker.html</welcome-file>
 	</welcome-file-list>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>cronjobs</web-resource-name>
+            <url-pattern>/ratechecker/crons/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 </web-app>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <cron>
+    <url>/ratechecker/crons/autofetch</url>
+    <description>Auto fetch and save the latest rate</description>
+    <schedule>every day 10:00</schedule>
+  </cron>
+</cronentries>
