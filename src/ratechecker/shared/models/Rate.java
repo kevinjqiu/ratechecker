@@ -24,6 +24,13 @@ public class Rate implements Serializable {
 	@Persistent
 	private Date timeFetched;
 
+	/**
+	 * The duration of the request to fetch the latest rate,
+	 * for record keeping purpose.
+	 */
+	@Persistent
+	private Long fetchDuration;
+
 	@Persistent
 	private Double rate;
 
@@ -62,4 +69,11 @@ public class Rate implements Serializable {
 		this.rate = rate;
 	}
 
+	public Long getFetchDuration() {
+		return fetchDuration;
+	}
+
+	public void setFetchDuration(final long fetchDuration) {
+		this.fetchDuration = fetchDuration;
+	}
 }

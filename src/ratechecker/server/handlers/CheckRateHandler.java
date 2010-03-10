@@ -38,18 +38,22 @@ public class CheckRateHandler implements ActionHandler<CheckRate, CheckRateResul
 		}
 
 		try {
+			final Date timeReqStarted = new Date();
+
 			final URL url = new URL(strUrl);
 
 			BufferedReader br = null;
 			try {
 				br = new BufferedReader(new InputStreamReader(url.openStream()));
 
+				final Date timeReqFinished = new Date();
 				final double dRate = Double.parseDouble(br.readLine());
 
 				final Rate rate = new Rate();
 				rate.setRate(dRate);
 				rate.setType(action.getType());
-				rate.setTimeFetched(new Date());
+				rate.setTimeFetched(timeReqFinished);
+				rate.setFetchDuration(timeReqFinished.getTime() - timeReqStarted.getTime());
 
 				retval.setRate(rate);
 
