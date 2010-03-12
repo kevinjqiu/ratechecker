@@ -5,7 +5,9 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 
+@Singleton
 public class PersistenceManagerProvider implements Provider<PersistenceManager> {
 
 	private final PersistenceManagerFactory _pmf;

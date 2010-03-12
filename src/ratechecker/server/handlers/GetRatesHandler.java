@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
@@ -32,7 +33,7 @@ public class GetRatesHandler implements ActionHandler<GetRates, GetRatesResult> 
 		final PersistenceManager pm = _pmp.get();
 
 		try {
-			final javax.jdo.Query query = pm.newQuery(Rate.class);
+			final Query query = pm.newQuery(Rate.class);
 			query.setRange(0, 10);
 			query.setOrdering("timeFetched desc");
 
