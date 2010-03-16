@@ -131,7 +131,7 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 				display.clearRecentRates();
 
 				for (final Rate rate : result.getRates()) {
-					display.addToRecentRates(rate, true);
+					display.addToRecentRates(rate, false);
 				}
 
 				// Put the latest rate in the box
