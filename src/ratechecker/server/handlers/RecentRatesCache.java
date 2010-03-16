@@ -2,7 +2,6 @@ package ratechecker.server.handlers;
 
 import java.util.List;
 
-import ratechecker.server.guice.MemcacheServiceProvider;
 import ratechecker.shared.models.Rate;
 
 import com.google.appengine.api.memcache.Expiration;
@@ -19,16 +18,15 @@ public class RecentRatesCache {
 
 	private static final Expiration CACHE_EXPIRATION = Expiration.byDeltaSeconds(3600);
 
-	private final MemcacheServiceProvider _mcp;
+	private final MemcacheService _mcs;
 
 	@Inject
-	public RecentRatesCache(final MemcacheServiceProvider mcp) {
-		_mcp = mcp;
+	public RecentRatesCache(final MemcacheService mcs) {
+		_mcs = mcs;
 	}
 
 	public void invalidate() {
-		final MemcacheService memcache = _mcp.get();
-		memcache.delete(RECENT_RATES_KEY, NO_READD_INTERVAL);
+		_mcs.delete(RECENT_RATES_KEY, NO_READD_INTERVAL);
 	}
 
 	/**
@@ -37,12 +35,11 @@ public class RecentRatesCache {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Rate> getCachedResult() {
-		return (List<Rate>) _mcp.get().get(RECENT_RATES_KEY);
+		return (List<Rate>) _mcs.get(RECENT_RATES_KEY);
 	}
 
 	public void setResult(final List<Rate> rates) {
-		final MemcacheService memcache = _mcp.get();
-		memcache.put(NO_READD_INTERVAL, rates, CACHE_EXPIRATION, SetPolicy.SET_ALWAYS);
+		_mcs.put(NO_READD_INTERVAL, rates, CACHE_EXPIRATION, SetPolicy.SET_ALWAYS);
 	}
 
 	/**

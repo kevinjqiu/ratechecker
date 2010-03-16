@@ -18,8 +18,6 @@ import com.google.inject.Inject;
 
 public class GetRatesHandler implements ActionHandler<GetRates, GetRatesResult> {
 
-	private static final String RECENT_RATES_KEY = "recentRates";
-
 	private final PersistenceManagerProvider _pmp;
 
 	private final RecentRatesCache _recentRatesCache;
