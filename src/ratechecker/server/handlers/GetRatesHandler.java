@@ -18,11 +18,16 @@ import com.google.inject.Inject;
 
 public class GetRatesHandler implements ActionHandler<GetRates, GetRatesResult> {
 
+	private static final String RECENT_RATES_KEY = "recentRates";
+
 	private final PersistenceManagerProvider _pmp;
 
+	private final RecentRatesCache _recentRatesCache;
+
 	@Inject
-	public GetRatesHandler(final PersistenceManagerProvider pmp) {
+	public GetRatesHandler(final PersistenceManagerProvider pmp, final RecentRatesCache recentRatesCache) {
 		_pmp = pmp;
+		_recentRatesCache = recentRatesCache;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -30,6 +35,14 @@ public class GetRatesHandler implements ActionHandler<GetRates, GetRatesResult> 
 	public GetRatesResult execute(final GetRates action,
 			final ExecutionContext ctx) throws ActionException {
 
+		// Ask memcache first if recent rates are there
+		// if so, return it directly from memcache
+		final List<Rate> recentRates = _recentRatesCache.getCachedResult();
+		if (recentRates != null) {
+			return new GetRatesResult(recentRates);
+		}
+
+		// If not, we query the data store
 		final PersistenceManager pm = _pmp.get();
 
 		try {
@@ -49,6 +62,8 @@ public class GetRatesHandler implements ActionHandler<GetRates, GetRatesResult> 
 				rates.add((Rate) rate);
 			}
 
+			// Then update the memcache
+			_recentRatesCache.setResult(rates);
 			return new GetRatesResult(rates);
 		} finally {
 			pm.close();
