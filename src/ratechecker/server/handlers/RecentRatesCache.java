@@ -39,7 +39,7 @@ public class RecentRatesCache {
 	}
 
 	public void setResult(final List<Rate> rates) {
-		_mcs.put(NO_READD_INTERVAL, rates, CACHE_EXPIRATION, SetPolicy.SET_ALWAYS);
+		_mcs.put(RECENT_RATES_KEY, rates, CACHE_EXPIRATION, SetPolicy.SET_ALWAYS);
 	}
 
 	/**
